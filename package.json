@@ -4,11 +4,11 @@
   "description": "sr discord bot in korean",
   "main": "sr-discordbot.js",
   "dependencies": {
+    "cron": "^2.3.0",
     "discord.js": "^14.8.0",
     "events": "^3.3.0",
     "node-fetch": "^3.3.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --experimental-modules sr-discordbot.mjs"
