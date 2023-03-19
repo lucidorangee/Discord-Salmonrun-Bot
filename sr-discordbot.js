@@ -39,12 +39,12 @@ client.once("ready", async () => {
   const krnames = await kr.json();
   console.log(`Online as ${client.user.tag}`);
     
-  let scheduledMessage = new cron.CronJob('*/1 * * * *', async () => {
+  let scheduledMessage = new cron.CronJob('0 * * * *', async () => {
   // This runs every day at 10:30:00, you can do anything you want
   // Specifing your guild (server) and your channel
      const guild = client.guilds.cache.get('193203190643032064');
      const channel = guild.channels.cache.get('193203190643032064');
-     console.log("Checking");
+     console.log("Checking!");
 
       //Check if sr schedule updated
       try{
