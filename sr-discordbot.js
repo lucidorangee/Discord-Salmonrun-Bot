@@ -4,9 +4,18 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token, clientId, guildId, channelId } = require('./config.json');
 const cron = require('cron');
+const Twit = require('twit');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+//Twitter
+const twitter = new Twit({
+  consumer_key: 'YOUR_CONSUMER_KEY',
+  consumer_secret: 'YOUR_CONSUMER_SECRET',
+  access_token: 'YOUR_ACCESS_TOKEN',
+  access_token_secret: 'YOUR_ACCESS_TOKEN_SECRET'
+});
 
 // When the client is ready, run this code (only once)
 // We use 'c' for the event parameter to keep it separate from the already defined 'client'
@@ -32,7 +41,23 @@ for (const file of commandFiles) {
 	}
 }
 
-//Scheduled
+//Twitter Hashtag Detection
+const scheduledMessage = new cron.CronJob('*/30 * * * *', async () => {
+  // Search for the latest tweet with the #sr hashtag
+  T.get('search/tweets', { q: '#연어런', count: 1 }, async (err, data, response) => {
+    if (!err) {
+      const tweet = data.statuses[0];
+      // Post the tweet's URL to a Discord channel
+      const channel = client.channels.cache.get('your_channel_id');
+      await channel.send(tweet.entities.urls[0].url);
+    }
+  });
+});
+
+// Start the scheduled message job
+scheduledMessage.start();
+
+//Schedule Change
 let previousData;
 client.once("ready", async () => {
   const kr = await fetch('https://splatoon3.ink/data/locale/ko-KR.json');
@@ -66,7 +91,7 @@ client.once("ready", async () => {
           const weapon3 = curSchedule.setting.weapons[2];
           const weapon4 = curSchedule.setting.weapons[3];
 
-          const nextSchedule = coopSchedule.regularSchedules.nodes[0];
+          const nextSchedule = coopSchedule.regularSchedules.nodes[1];
 
           const next_startTime = nextSchedule.startTime;
           const next_endTime = nextSchedule.endTime;
