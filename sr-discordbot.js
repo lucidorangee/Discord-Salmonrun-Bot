@@ -32,10 +32,6 @@ for (const file of commandFiles) {
 	}
 }
 
-
-// Start the scheduled message job
-scheduledMessage.start();
-
 //Schedule Change
 let previousData;
 client.once("ready", async () => {
